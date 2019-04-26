@@ -28,9 +28,26 @@ router.get('/signin', (req, res, next) => {
     res.render('signin')
 });
 
+router.get('/logout', (req, res, next) => {
+    req.logOut();
+    res.redirect('/')
+})
+
+router.use((req, res , next) => {
+    isAuthenticated(req, res, next);
+    next();
+});
+
 //profile
 router.get('/profile', (req, res, next) => {
     res.render('profile');
 });
+
+function isAuthenticated(req, res, next) {
+    if(req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/');
+};
 
 module.exports = router;
